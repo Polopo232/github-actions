@@ -1,12 +1,12 @@
 name: Send email on push
- 
+
 on:
   push:
- 
+
 jobs:
   mail_on_push:
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
@@ -14,15 +14,25 @@ jobs:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
- 
+
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
- 
+
           subject: "Push to ${{ github.repository }}"
-          body: |
-            Repository: ${{ github.repository }}
-            User: ${{ github.event.pusher.name }}
-            Commit message: ${{ github.event.head_commit.message }}
- 
           to: nikiforovnikita08@gmail.com
           from: GitHub Actions
+
+          html_body: |
+            <h2>🚀 Uus push repositooriumis</h2>
+            <ul>
+              <li><b>Repositoorium:</b> <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a></li>
+              <li><b>Autor:</b> ${{ github.event.pusher.name }}</li>
+              <li><b>Sõnum:</b> ${{ github.event.head_commit.message }}</li>
+              <li><b>Haru:</b> ${{ github.ref_name }}</li>
+              <li><b>Aeg:</b> ${{ github.event.head_commit.timestamp }}</li>
+              <li><b>Link commitile:</b> <a href="${{ github.event.head_commit.url }}">ava</a></li>
+            </ul>
+            <hr>
+            <p style="color:#666;font-size:12px;">
+              Saadetud automaatselt GitHub Actionsi kaudu
+            </p>
